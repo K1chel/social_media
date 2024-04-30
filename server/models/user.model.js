@@ -1,6 +1,53 @@
-import { Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-const UserSchema = new Schema({});
+const UserSchema = new Schema({
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  fullName: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  avatar: {
+    type: String,
+    default: "",
+  },
+  bio: {
+    type: String,
+    default: "",
+  },
+  links: {
+    type: [String],
+    default: [],
+  },
+  followers: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    default: [],
+  },
+  following: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    default: [],
+  },
+  likedPosts: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Post",
+    default: [],
+  },
+  savedPosts: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Post",
+    default: [],
+  },
+});
 
 const User = mongoose.model("User", UserSchema);
 
