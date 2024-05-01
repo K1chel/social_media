@@ -27,26 +27,38 @@ const UserSchema = new Schema({
     type: [String],
     default: [],
   },
-  followers: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    default: [],
+  password: {
+    type: String,
+    required: true,
   },
-  following: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    default: [],
-  },
-  likedPosts: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Post",
-    default: [],
-  },
-  savedPosts: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Post",
-    default: [],
-  },
+  followers: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: [],
+    },
+  ],
+  following: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: [],
+    },
+  ],
+  likedPosts: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Post",
+      default: [],
+    },
+  ],
+  savedPosts: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Post",
+      default: [],
+    },
+  ],
 });
 
 const User = mongoose.model("User", UserSchema);
