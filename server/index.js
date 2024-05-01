@@ -30,7 +30,7 @@ cloudinary.config({
 // Rotues
 app.use("/api/auth", authRoutes);
 app.use("/api/users", protectedRoute, userRoutes);
-app.use("/api/posts", postRoutes);
+app.use("/api/posts", protectedRoute, postRoutes);
 app.use("/api/notifications", notificationRoutes);
 
 app.listen(PORT, () => {
