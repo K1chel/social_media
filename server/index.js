@@ -31,7 +31,7 @@ cloudinary.config({
 app.use("/api/auth", authRoutes);
 app.use("/api/users", protectedRoute, userRoutes);
 app.use("/api/posts", protectedRoute, postRoutes);
-app.use("/api/notifications", notificationRoutes);
+app.use("/api/notifications", protectedRoute, notificationRoutes);
 
 app.listen(PORT, () => {
   connectDB();
