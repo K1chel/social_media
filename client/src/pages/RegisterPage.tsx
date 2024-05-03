@@ -20,26 +20,28 @@ import { ShowPassword } from "@/components/form/ShowPassword";
 import { Button } from "@/components/ui/button";
 import { AuthContext } from "@/providers/AuthProvider";
 
-import { loginSchema } from "@/lib/validation";
+import { registerSchema } from "@/lib/validation";
 
-export const LoginPage = () => {
+export const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const { setToken, setUser } = useContext(AuthContext);
 
-  const form = useForm<z.infer<typeof loginSchema>>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<z.infer<typeof registerSchema>>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       password: "",
       username: "",
+      email: "",
+      fullName: "",
     },
   });
 
   const isLoading = form.formState.isSubmitting;
 
-  const onSubmit = async (values: z.infer<typeof loginSchema>) => {
+  const onSubmit = async (values: z.infer<typeof registerSchema>) => {
     try {
-      const res = await fetch("/api/auth/login", {
+      const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
@@ -65,11 +67,28 @@ export const LoginPage = () => {
   return (
     <div className="flex flex-col gap-y-5 w-full h-full">
       <AuthHeader
-        title="Welcome back!"
-        description="Login to your account using your username and password."
+        title="Welcome!"
+        description="Create an account to get started"
       />
       <Form {...form}>
         <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+          <FormField
+            control={form.control}
+            name="fullName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Full Name</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    placeholder="John Doe"
+                    disabled={isLoading}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="username"
@@ -80,6 +99,23 @@ export const LoginPage = () => {
                   <Input
                     {...field}
                     placeholder="johndoe"
+                    disabled={isLoading}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    placeholder="johndoe@example.com"
                     disabled={isLoading}
                   />
                 </FormControl>
@@ -122,18 +158,18 @@ export const LoginPage = () => {
             {isLoading ? (
               <>
                 <Loader2Icon className="w-5 h-5 animate-spin text-muted-foreground" />
-                <span className="ml-2">Logging in...</span>
+                <span className="ml-2">Creating Account...</span>
               </>
             ) : (
-              "Login"
+              "Create Account"
             )}
           </Button>
         </form>
       </Form>
       <AuthFooter
-        title="Don't have an account?"
-        description="Create one here."
-        href="/register"
+        title="Already have an account?"
+        description="Login here."
+        href="/login"
       />
     </div>
   );

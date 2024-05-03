@@ -1,12 +1,19 @@
 import { Route, Routes } from "react-router-dom";
+import { useContext } from "react";
 
-import { NotFoundPage } from "@/pages/NotFoundPage";
 import { PrivateLayout } from "@/components/layout/PrivateLayout";
 import { PublicLayout } from "@/components/layout/PublicLayout";
+import { NotFoundPage } from "@/pages/NotFoundPage";
+import { AuthContext } from "@/providers/AuthProvider";
+import { Loader } from "@/components/Loader";
 
 import { privateRoutes, publicRoutes } from "@/constants/routes";
 
 const App = () => {
+  const { isLoading } = useContext(AuthContext);
+
+  if (isLoading) return <Loader />;
+
   return (
     <>
       <Routes>

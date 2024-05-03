@@ -1,7 +1,11 @@
+import { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
+import { AuthContext } from "@/providers/AuthProvider";
+import { ModeToggle } from "../ModeToggle";
+
 export const PublicLayout = () => {
-  const user = false;
+  const { user } = useContext(AuthContext);
 
   return (
     <>
@@ -9,7 +13,7 @@ export const PublicLayout = () => {
         <Navigate to="/" />
       ) : (
         <div className="h-screen max-h-screen w-full flex items-center justify-center px-4">
-          <main className="max-w-xl mx-auto w-full border-2 px-3 py-5 rounded shadow-lg">
+          <main className="max-w-xl mx-auto w-full border-2 px-5 py-8 rounded shadow-lg">
             <Outlet />
           </main>
         </div>
