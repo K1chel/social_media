@@ -10,7 +10,7 @@ import { Loader } from "@/components/Loader";
 import { privateRoutes, publicRoutes } from "@/constants/routes";
 
 const App = () => {
-  const { isLoading } = useContext(AuthContext);
+  const { isLoading, user } = useContext(AuthContext);
 
   if (isLoading) return <Loader />;
 

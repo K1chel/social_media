@@ -103,7 +103,7 @@ export const currentUser = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    res.status(200).json({ user });
+    res.status(200).json(user);
   } catch (error) {
     console.log(`Error in currentUser: ${error}`);
     res.status(500).json({ message: "Internal server error" });
