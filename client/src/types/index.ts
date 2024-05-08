@@ -4,8 +4,8 @@ export interface IUser {
   fullName: string;
   email: string;
   avatar: string;
-  bio: string;
-  links: string[];
+  bio?: string;
+  links?: string[];
   followers: string[];
   following: string[];
   likedPosts: string[];

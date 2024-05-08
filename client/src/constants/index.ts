@@ -11,4 +11,19 @@ export const sidebarLinks = [
     href: "/notifications",
     icon: BellIcon,
   },
-];
+] as const;
+
+export const postTabSelections = [
+  {
+    label: "Posts",
+    values: "posts",
+  },
+  {
+    label: "Liked",
+    values: "liked",
+  },
+  {
+    label: "Saved",
+    values: "saved",
+  },
+] as const;

@@ -21,17 +21,17 @@ export const Navbar = () => {
         </Button>
       </div>
       <div className="flex items-center gap-x-3">
-        <ActionTooltip title="Notifications">
+        <ActionTooltip title="Notifications" className="hidden lg:block">
           <Button size="icon" variant="outline">
             <BellIcon className="w-5 h-5" />
           </Button>
         </ActionTooltip>
-        <ActionTooltip title="GitHub">
+        <ActionTooltip title="GitHub" className="hidden lg:block">
           <Button size="icon" variant="outline">
             <GithubIcon className="w-5 h-5" />
           </Button>
         </ActionTooltip>
-        <ActionTooltip title="Appearance">
+        <ActionTooltip title="Appearance" className="hidden lg:block">
           <div>
             <ModeToggle />
           </div>
