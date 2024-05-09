@@ -1,10 +1,11 @@
-import { BellIcon, GithubIcon, MenuIcon, SearchIcon } from "lucide-react";
+import { BellIcon, GithubIcon, SearchIcon } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ModeToggle";
-import { UserMenu } from "@/components/shared/UserMenu";
 import { SearchBar } from "@/components/SearchBar";
-import { ActionTooltip } from "../ActionTooltip";
+import { UserMenu } from "@/components/shared/UserMenu";
+import { Button } from "@/components/ui/button";
+import { ActionTooltip } from "@/components/ActionTooltip";
+import { MobileSidebar } from "@/components/shared/MobileSidebar";
 
 export const Navbar = () => {
   return (
@@ -13,9 +14,7 @@ export const Navbar = () => {
         <SearchBar />
       </div>
       <div className="flex md:hidden items-center gap-x-2">
-        <Button size="icon" variant="ghost">
-          <MenuIcon />
-        </Button>
+        <MobileSidebar />
         <Button size="icon" variant="ghost">
           <SearchIcon />
         </Button>

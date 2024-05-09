@@ -13,10 +13,10 @@ export const PrivateLayout = () => {
     <>
       {user ? (
         <div className="flex flex-col min-h-screen w-full">
-          <nav className="fixed top-0 inset-x-0 h-20 border-b bg-background pl-0 md:pl-20 xl:pl-[220px]">
+          <nav className="fixed top-0 inset-x-0 h-20 border-b bg-background pl-0 md:pl-20 xl:pl-[220px] z-50">
             <Navbar />
           </nav>
-          <aside className="border-r h-full hidden md:block fixed top-0 w-20 xl:w-[220px] bg-background">
+          <aside className="border-r h-full hidden md:block fixed top-0 w-20 xl:w-[220px] bg-background z-50">
             <Sidebar />
           </aside>
           <main className="pl-0 md:pl-20 xl:pl-[220px] pt-20 flex flex-1">

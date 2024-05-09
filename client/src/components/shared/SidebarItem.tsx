@@ -3,15 +3,23 @@ import { ActionTooltip } from "../ActionTooltip";
 import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
+import { cn } from "@/lib/utils";
 
 type Props = {
   label: string;
   href?: string;
   icon: LucideIcon;
   onClick?: () => void;
+  isMobile?: boolean;
 };
 
-export const SidebarItem = ({ href, icon: Icon, label, onClick }: Props) => {
+export const SidebarItem = ({
+  href,
+  icon: Icon,
+  label,
+  onClick,
+  isMobile,
+}: Props) => {
   const [activeLink, setActiveLink] = useState<string | null>(null);
 
   const location = useLocation();
@@ -25,19 +33,24 @@ export const SidebarItem = ({ href, icon: Icon, label, onClick }: Props) => {
   return (
     <ActionTooltip
       title={label}
-      className="xl:hidden block"
+      className={cn("xl:hidden block", isMobile && "hidden")}
       align="center"
       side="right"
       sideOffset={10}
     >
       <Link to={href ? href : ""}>
         <Button
-          className="w-full flex items-center gap-x-3 xl:justify-start justify-center"
+          className={cn(
+            "w-full flex items-center gap-x-3 xl:justify-start justify-center",
+            isMobile && "justify-start"
+          )}
           variant={isActive ? "secondary" : "ghost"}
           onClick={onClick}
         >
           <Icon className="w-5 h-5" />
-          <span className="hidden xl:block">{label}</span>
+          <span className={cn("hidden xl:block", isMobile && "block")}>
+            {label}
+          </span>
         </Button>
       </Link>
     </ActionTooltip>

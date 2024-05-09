@@ -8,8 +8,13 @@ import { SidebarItem } from "./SidebarItem";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "@/providers/AuthProvider";
+import { cn } from "@/lib/utils";
 
-export const Sidebar = () => {
+type Props = {
+  isMobile?: boolean;
+};
+
+export const Sidebar = ({ isMobile }: Props) => {
   const { handleLogout, isLoading } = useLogout();
   const { user } = useContext(AuthContext);
 
@@ -22,7 +27,14 @@ export const Sidebar = () => {
         className="h-20 flex items-center xl:justify-start justify-center px-3 gap-x-2"
       >
         <img src="/logo.svg" alt="Logo" className="xl:w-12 xl:h-12 w-10 h-10" />
-        <h5 className="text-xl hidden xl:block font-semibold">Social Media</h5>
+        <h5
+          className={cn(
+            "text-xl hidden xl:block font-semibold",
+            isMobile && "block"
+          )}
+        >
+          Social Media
+        </h5>
       </Link>
       <div className="px-2 py-4 flex-1 flex flex-col gap-y-2">
         {sidebarLinks.map((link) => (
@@ -31,16 +43,23 @@ export const Sidebar = () => {
             href={link.href}
             label={link.label}
             icon={link.icon}
+            isMobile={isMobile}
           />
         ))}
         <SidebarItem
           href={`/profile/${user.username}`}
           label="Profile"
           icon={UserIcon}
+          isMobile={isMobile}
         />
       </div>
       <div className="py-4 px-2 w-full">
-        <SidebarItem label="Logout" icon={LogOutIcon} onClick={handleLogout} />
+        <SidebarItem
+          label="Logout"
+          icon={LogOutIcon}
+          onClick={handleLogout}
+          isMobile={isMobile}
+        />
       </div>
     </div>
   );
