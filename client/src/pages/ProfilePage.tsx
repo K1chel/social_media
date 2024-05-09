@@ -42,8 +42,6 @@ export const ProfilePage = () => {
 
   if (!user) return <Navigate to="/404" />;
 
-  console.log({ selectedTab });
-
   return (
     <div className="max-w-5xl mx-auto w-full h-full px-5 space-y-2 py-10">
       <UserHeader user={user} />

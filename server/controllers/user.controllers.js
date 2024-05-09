@@ -3,6 +3,8 @@ import { v2 as cloudinary } from "cloudinary";
 import User from "../models/user.model.js";
 import Notification from "../models/notification.model.js";
 
+const MAX_BIO_CHARACTERS = 200;
+
 export const updateProfile = async (req, res) => {
   let { avatar } = req.body;
   const { username, fullName, bio, links } = req.body;
@@ -34,10 +36,10 @@ export const updateProfile = async (req, res) => {
       user.links = links;
     }
 
-    if (bio && bio.length > 250) {
-      return res
-        .status(400)
-        .json({ error: "Bio cannot be more than 150 characters" });
+    if (bio && bio.length > MAX_BIO_CHARACTERS) {
+      return res.status(400).json({
+        error: `Bio cannot be more than ${MAX_BIO_CHARACTERS} characters`,
+      });
     }
 
     user.username = username || user.username;

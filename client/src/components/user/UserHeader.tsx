@@ -1,13 +1,14 @@
 import { useContext } from "react";
+import { Loader2Icon } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import { UserAvatar } from "@/components/UserAvatar";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AuthContext } from "@/providers/AuthProvider";
-
 import { useFollowUnfollow } from "@/hooks/useFollowUnfollow";
+
 import { IUser } from "@/types";
-import { Loader2Icon } from "lucide-react";
 
 type Props = {
   user: IUser;
@@ -58,9 +59,11 @@ export const UserHeader = ({ user }: Props) => {
       </div>
       <div className="w-full flex items-center justify-center max-w-[250px]">
         {isOwner ? (
-          <Button disabled={isLoading} className="w-full">
-            Update Profile
-          </Button>
+          <Link to={`/profile/${currentUser.username}/update`}>
+            <Button disabled={isLoading} className="w-full">
+              Update Profile
+            </Button>
+          </Link>
         ) : (
           <Button
             disabled={isLoading}
