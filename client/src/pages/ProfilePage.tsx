@@ -45,7 +45,7 @@ export const ProfilePage = () => {
   console.log({ selectedTab });
 
   return (
-    <div className="max-w-5xl mx-auto w-full h-full px-5 space-y-2">
+    <div className="max-w-5xl mx-auto w-full h-full px-5 space-y-2 py-10">
       <UserHeader user={user} />
       <UserPostsTabSelector
         selectedTab={selectedTab}

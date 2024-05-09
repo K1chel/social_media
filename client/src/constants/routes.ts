@@ -3,6 +3,7 @@ import { LoginPage } from "@/pages/LoginPage";
 import { NotificationsPage } from "@/pages/NotificationsPage";
 import { ProfilePage } from "@/pages/ProfilePage";
 import { RegisterPage } from "@/pages/RegisterPage";
+import { UpdateProfilePage } from "@/pages/UpdateProfilePage";
 
 export const privateRoutes = [
   {
@@ -16,6 +17,10 @@ export const privateRoutes = [
   {
     path: "/profile/:username",
     element: ProfilePage,
+  },
+  {
+    path: "/profile/:username/update",
+    element: UpdateProfilePage,
   },
 ];
 

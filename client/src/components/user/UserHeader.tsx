@@ -1,11 +1,13 @@
 import { useContext } from "react";
 
-import { AuthContext } from "@/providers/AuthProvider";
 import { UserAvatar } from "@/components/UserAvatar";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AuthContext } from "@/providers/AuthProvider";
 
+import { useFollowUnfollow } from "@/hooks/useFollowUnfollow";
 import { IUser } from "@/types";
+import { Loader2Icon } from "lucide-react";
 
 type Props = {
   user: IUser;
@@ -13,13 +15,15 @@ type Props = {
 
 export const UserHeader = ({ user }: Props) => {
   const { user: currentUser } = useContext(AuthContext);
+  const { handleFollowUnfollow, isFollowing, isLoading } =
+    useFollowUnfollow(user);
 
   if (!currentUser) return null;
 
   const isOwner = currentUser._id === user._id;
 
   return (
-    <div className="w-full flex flex-col items-center justify-center gap-y-4 py-5 lg:py-12">
+    <div className="w-full flex flex-col items-center justify-center gap-y-4 ">
       <UserAvatar
         src={user.avatar}
         username={user.username}
@@ -54,9 +58,26 @@ export const UserHeader = ({ user }: Props) => {
       </div>
       <div className="w-full flex items-center justify-center max-w-[250px]">
         {isOwner ? (
-          <Button className="w-full">Update Profile</Button>
+          <Button disabled={isLoading} className="w-full">
+            Update Profile
+          </Button>
         ) : (
-          <Button className="w-full">Follow</Button>
+          <Button
+            disabled={isLoading}
+            onClick={handleFollowUnfollow}
+            className="w-full"
+          >
+            {isLoading ? (
+              <div className="text-muted-foreground flex items-center gap-x-2">
+                <Loader2Icon className="animate-spin h-5 w-5" />
+                <span>Loading...</span>
+              </div>
+            ) : isFollowing ? (
+              "Unfollow"
+            ) : (
+              "Follow"
+            )}
+          </Button>
         )}
       </div>
     </div>
