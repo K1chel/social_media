@@ -9,6 +9,7 @@ import { AuthContext } from "@/providers/AuthProvider";
 import { useFollowUnfollow } from "@/hooks/useFollowUnfollow";
 
 import { IUser } from "@/types";
+import { getIconAndLabelFromLink } from "@/lib/utils";
 
 type Props = {
   user: IUser;
@@ -37,6 +38,30 @@ export const UserHeader = ({ user }: Props) => {
           <p className="mt-2 max-w-md text-xs md:text-sm text-gray-500 dark:text-gray-400">
             {user.bio}
           </p>
+        ) : null}
+        {user.links?.length ? (
+          <div className="mt-3 flex items-center justify-center max-w-xl mx-auto w-full gap-x-1">
+            {user.links.map((link) => {
+              const { icon: Icon, label } = getIconAndLabelFromLink(link);
+              return (
+                <Button
+                  key={link}
+                  size="sm"
+                  variant="link"
+                  className="text-muted-foreground hover:text-primary transition"
+                >
+                  <Link
+                    to={link}
+                    target="_blank"
+                    className="flex items-center gap-x-1"
+                  >
+                    <Icon className="size-4 shrink-0" />
+                    <p className="text-sm">{label}</p>
+                  </Link>
+                </Button>
+              );
+            })}
+          </div>
         ) : null}
       </div>
       <div className="flex items-center justify-center gap-x-10">

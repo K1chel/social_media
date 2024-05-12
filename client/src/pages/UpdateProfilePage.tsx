@@ -1,18 +1,30 @@
+import * as z from "zod";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { XIcon } from "lucide-react";
+import { toast } from "sonner";
 
 import { UserAvatar } from "@/components/UserAvatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { usePreviewImage } from "@/hooks/usePrevieImage";
-import { getIconFromLink } from "@/lib/utils";
-import { AuthContext } from "@/providers/AuthProvider";
-import { XIcon } from "lucide-react";
-import { toast } from "sonner";
 import { MAX_BIO_CHARACTERS } from "@/constants";
-import { IUser } from "@/types";
+import { usePreviewImage } from "@/hooks/usePrevieImage";
+import { getIconAndLabelFromLink } from "@/lib/utils";
+import { AuthContext } from "@/providers/AuthProvider";
+
+const linkSchema = z.string().url();
+
+const validateLink = (link: string) => {
+  try {
+    linkSchema.parse(link);
+  } catch (error) {
+    toast.error("Invalid link. Please enter a valid URL.");
+    return false;
+  }
+  return true;
+};
 
 export const UpdateProfilePage = () => {
   const { user } = useContext(AuthContext);
@@ -70,7 +82,7 @@ export const UpdateProfilePage = () => {
 
       // toast.success("Profile updated successfully.");
       // TODO: Fix window.reload()
-      window.location.reload();
+      // window.location.reload();
       navigate(`/profile/${user.username}`);
     } catch (error) {
       console.log(error);
@@ -177,7 +189,7 @@ export const UpdateProfilePage = () => {
                 <div className="space-y-4">
                   <Label>Links</Label>
                   {values.links.map((link) => {
-                    const Icon = getIconFromLink(link);
+                    const { icon: Icon } = getIconAndLabelFromLink(link);
                     return (
                       <Link
                         key={link}
@@ -224,13 +236,13 @@ export const UpdateProfilePage = () => {
                     placeholder="Paste your link here"
                   />
                   <Button
-                    disabled={isLoading}
+                    disabled={isLoading || !newLink}
                     type="button"
                     onClick={() => {
-                      if (newLink) {
+                      if (newLink && validateLink(newLink)) {
                         setValues({
                           ...values,
-                          links: user?.links || [],
+                          links: [...(user?.links || []), newLink],
                         });
                         setNewLink("");
                       }
