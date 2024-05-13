@@ -59,6 +59,10 @@ const UserSchema = new Schema({
       default: [],
     },
   ],
+  isPrivate: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const User = mongoose.model("User", UserSchema);

@@ -7,7 +7,7 @@ const MAX_BIO_CHARACTERS = 200;
 
 export const updateProfile = async (req, res) => {
   let { avatar } = req.body;
-  const { username, fullName, bio, links } = req.body;
+  const { username, fullName, bio, links, isPrivate } = req.body;
   const userId = req.user._id;
   try {
     let user = await User.findById(userId);
@@ -46,6 +46,7 @@ export const updateProfile = async (req, res) => {
     user.fullName = fullName || user.fullName;
     user.bio = bio || user.bio;
     user.avatar = avatar || user.avatar;
+    user.isPrivate = isPrivate || user.isPrivate;
 
     await user.save();
 

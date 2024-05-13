@@ -13,6 +13,7 @@ import { MAX_BIO_CHARACTERS } from "@/constants";
 import { usePreviewImage } from "@/hooks/usePrevieImage";
 import { getIconAndLabelFromLink } from "@/lib/utils";
 import { AuthContext } from "@/providers/AuthProvider";
+import { Switch } from "@/components/ui/switch";
 
 const linkSchema = z.string().url();
 
@@ -43,6 +44,7 @@ export const UpdateProfilePage = () => {
     bio: user?.bio,
     links: user?.links,
   });
+  const [isPrivate, setIsPrivate] = useState<boolean>(user?.isPrivate ?? true);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
@@ -71,6 +73,7 @@ export const UpdateProfilePage = () => {
         body: JSON.stringify({
           ...values,
           avatar: imageUrl,
+          isPrivate: isPrivate ? "true" : "false",
         }),
       });
 
@@ -80,9 +83,7 @@ export const UpdateProfilePage = () => {
         toast.error(data.error);
       }
 
-      // toast.success("Profile updated successfully.");
-      // TODO: Fix window.reload()
-      // window.location.reload();
+      toast.success("Profile updated successfully.");
       navigate(`/profile/${user.username}`);
     } catch (error) {
       console.log(error);
@@ -95,6 +96,8 @@ export const UpdateProfilePage = () => {
     toast.info("Not allowed to see this page.");
     return <Navigate to="/" />;
   }
+
+  console.log(isPrivate);
 
   return (
     <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
@@ -126,6 +129,15 @@ export const UpdateProfilePage = () => {
                 type="file"
                 onChange={handleImageChange}
               />
+            </div>
+            <div className="flex items-center gap-x-2">
+              <Switch
+                checked={isPrivate}
+                onCheckedChange={() => {
+                  setIsPrivate((prev) => !prev);
+                }}
+              />
+              <span>{isPrivate ? "Private" : "Public"} account</span>
             </div>
             <div className="w-full space-y-1.5">
               <Label>Username</Label>

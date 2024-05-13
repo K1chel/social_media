@@ -10,6 +10,7 @@ export interface IUser {
   following: string[];
   likedPosts: string[];
   savedPosts: string[];
+  isPrivate: boolean;
   createdAt: string;
   updatedAt: string;
 }

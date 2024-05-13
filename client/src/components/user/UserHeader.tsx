@@ -29,7 +29,7 @@ export const UserHeader = ({ user }: Props) => {
       <UserAvatar
         src={user.avatar}
         username={user.username}
-        className="h-24 w-24 md:h-32 md:w-32"
+        className="h-24 w-24 md:h-32 md:w-32 text-2xl md:text-4xl"
       />
       <div className="text-center">
         <h1 className="text-2xl font-bold md:text-3xl">{user.fullName}</h1>
