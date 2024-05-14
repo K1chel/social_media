@@ -1,5 +1,6 @@
 import { postAtom } from "@/atoms/postAtom";
 import { CreatePost } from "@/components/post/CreatePost";
+import { PostCard } from "@/components/post/PostCard";
 import { IPost } from "@/types";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useRecoilState } from "recoil";
@@ -34,17 +35,16 @@ export const HomePage = () => {
   if (isLoading) return <p>loading...</p>;
 
   return (
-    <div className="max-w-3xl mx-auto w-full space-y-5 container py-5">
+    <div className="max-w-3xl mx-auto w-full space-y-5 container py-3 mb-10">
       <CreatePost />
       {!isLoading && posts.length === 0 ? (
         <p>no posts</p>
       ) : (
-        <div>
-          {posts.map((post) => (
-            <div key={post._id}>
-              <p>{post.text}</p>
-            </div>
-          ))}
+        <div className="space-y-5">
+          {posts.map((post) => {
+            const isLast = posts[posts.length - 1]._id === post._id;
+            return <PostCard key={post._id} post={post} isLast={isLast} />;
+          })}
         </div>
       )}
     </div>

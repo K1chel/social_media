@@ -29,3 +29,5 @@ export const postTabSelections = [
 ] as const;
 
 export const MAX_BIO_CHARACTERS = 200;
+
+export const MAX_SHOW_POST_CHARACTERS = 200;
