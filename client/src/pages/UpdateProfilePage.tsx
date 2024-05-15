@@ -28,7 +28,7 @@ const validateLink = (link: string) => {
 };
 
 export const UpdateProfilePage = () => {
-  const { user } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
   const { imageUrl, handleImageChange, setImageUrl } = usePreviewImage();
   const { username } = useParams();
 
@@ -83,8 +83,9 @@ export const UpdateProfilePage = () => {
         toast.error(data.error);
       }
 
+      setUser(data);
       toast.success("Profile updated successfully.");
-      navigate(`/profile/${user.username}`);
+      navigate(`/profile/${data.username}`);
     } catch (error) {
       console.log(error);
     } finally {
