@@ -1,7 +1,7 @@
 import { ImageIcon, TrashIcon } from "lucide-react";
-import { useContext, useRef, useState } from "react";
+import { useCallback, useContext, useRef, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
-import { useMedia } from "react-use";
+import { useEvent, useMedia } from "react-use";
 
 import { postAtom } from "@/atoms/postAtom";
 import { UserAvatar } from "@/components/UserAvatar";
@@ -53,6 +53,15 @@ export const CreatePostModal = () => {
       setIsLoading(false);
     }
   };
+
+  const onKeyDown = (e: KeyboardEvent) => {
+    if (!inputText && !imageUrl) return;
+    if (e.key === "Enter" && e.metaKey) {
+      handleSubmit(e as unknown as React.FormEvent<HTMLFormElement>);
+    }
+  };
+
+  useEvent("keydown", onKeyDown);
 
   if (!user) return null;
 
@@ -116,11 +125,12 @@ export const CreatePostModal = () => {
               </Button>
             </div>
           )}
-          <div className="flex justify-end w-full mt-2">
+          <div className="flex justify-end w-full items-center gap-x-2 mt-2">
+            <span className="text-xs text-muted-foreground">⌘ + enter</span>
             <Button
               className="rounded-full w-[100px]"
               size="sm"
-              disabled={isLoading}
+              disabled={isLoading || (!inputText && !imageUrl)}
               type="submit"
             >
               {isLoading ? "Creating..." : "Post"}

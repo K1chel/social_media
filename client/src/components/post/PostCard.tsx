@@ -13,9 +13,12 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { timeSince } from "@/lib/utils";
 import { AuthContext } from "@/providers/AuthProvider";
+import { useGetUserById } from "@/hooks/useGetUserById";
+import { Skeleton } from "@/components/ui/skeleton";
 
 import { MAX_SHOW_POST_CHARACTERS } from "@/constants";
 import { IPost } from "@/types";
+import { PostDropDown } from "./PostDropDown";
 
 type Props = {
   post: IPost;
@@ -23,8 +26,11 @@ type Props = {
 };
 
 export const PostCard = ({ post, isLast }: Props) => {
-  const { user: currentUser } = useContext(AuthContext);
   const [isTruncated, setIsTruncated] = useState(true);
+
+  const { user: currentUser } = useContext(AuthContext);
+  const { isLoading, user } = useGetUserById(post.postedBy);
+
   const navigate = useNavigate();
 
   const toggleTruncate = () => {
@@ -33,7 +39,7 @@ export const PostCard = ({ post, isLast }: Props) => {
 
   const onNavigate = (href: string) => navigate(href);
 
-  if (!currentUser) return null;
+  if (!currentUser || !user) return null;
 
   return (
     <>
@@ -41,16 +47,27 @@ export const PostCard = ({ post, isLast }: Props) => {
         className="flex gap-3 px-1 w-full cursor-pointer"
         onClick={() => onNavigate(`/post/${post._id}`)}
       >
-        <UserAvatar src={currentUser.avatar} username={currentUser.username} />
+        <div
+          className="size-10 rounded-full"
+          onClick={(e) => {
+            e.stopPropagation();
+            onNavigate(`/profile/${user.username}`);
+          }}
+        >
+          <UserAvatar src={user.avatar} username={user.username} />
+        </div>
         <div className="flex flex-col w-full -my-1">
           <div className="flex items-center justify-between">
             <div
               className="flex items-center gap-x-2 py-1"
-              onClick={() => onNavigate(`/profile/${currentUser.username}`)}
+              onClick={(e) => {
+                e.stopPropagation();
+                onNavigate(`/profile/${user.username}`);
+              }}
             >
-              <span>{currentUser.fullName}</span>
+              <span>{user.fullName}</span>
               <span className="text-sm text-muted-foreground">
-                @{currentUser.username}
+                @{user.username}
               </span>
               <div className="size-1 rounded-full bg-muted-foreground" />
               <span className="text-sm text-muted-foreground">
@@ -58,13 +75,13 @@ export const PostCard = ({ post, isLast }: Props) => {
               </span>
             </div>
             <div>
-              <Button
-                size="icon"
-                variant="ghost"
-                className="rounded-full text-muted-foreground"
-              >
-                <MoreHorizontalIcon className="size-5" />
-              </Button>
+              <div onClick={(e) => e.stopPropagation()}>
+                <PostDropDown
+                  post={post}
+                  currentUser={currentUser}
+                  user={user}
+                />
+              </div>
             </div>
           </div>
           {post.text && (
@@ -101,7 +118,7 @@ export const PostCard = ({ post, isLast }: Props) => {
               <Image
                 src={post.imageSrc}
                 alt="Image"
-                className="rounded-xl border"
+                className="rounded-xl border max-h-[450px]"
               />
             </div>
           )}
@@ -110,5 +127,30 @@ export const PostCard = ({ post, isLast }: Props) => {
       </div>
       {!isLast && <Separator />}
     </>
+  );
+};
+
+PostCard.Skeleton = function PostCardSkeleton() {
+  return (
+    <div className="p-1 flex gap-x-2 w-full">
+      <Skeleton className="size-10 rounded-full" />
+      <div className="flex flex-col gap-y-3 w-full">
+        <div className="flex items-center gap-x-2">
+          <Skeleton className="w-[80px] h-5" />
+          <Skeleton className="w-[40px] h-5" />
+          <Skeleton className="w-[20px] h-5" />
+        </div>
+        <Skeleton className="w-full h-6" />
+        <Skeleton className="w-full h-6" />
+        <Skeleton className="w-full h-6" />
+        <div className="mt-2 flex items-center justify-between">
+          <div className="flex items-center gap-x-3">
+            <Skeleton className="size-8" />
+            <Skeleton className="size-8" />
+          </div>
+          <Skeleton className="size-8" />
+        </div>
+      </div>
+    </div>
   );
 };

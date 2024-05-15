@@ -8,6 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useTheme } from "@/providers/ThemeProvider";
+import { Separator } from "./ui/separator";
 
 export function ModeToggle() {
   const { setTheme } = useTheme();
@@ -21,14 +22,25 @@ export function ModeToggle() {
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
+      <DropdownMenuContent align="end" className="p-0">
+        <DropdownMenuItem
+          onClick={() => setTheme("light")}
+          className="rounded-none"
+        >
           Light
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
+        <Separator />
+        <DropdownMenuItem
+          onClick={() => setTheme("dark")}
+          className="rounded-none"
+        >
           Dark
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
+        <Separator />
+        <DropdownMenuItem
+          onClick={() => setTheme("system")}
+          className="rounded-none"
+        >
           System
         </DropdownMenuItem>
       </DropdownMenuContent>

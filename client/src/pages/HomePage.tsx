@@ -32,7 +32,15 @@ export const HomePage = () => {
     fetchPosts();
   }, [setPosts]);
 
-  if (isLoading) return <p>loading...</p>;
+  if (isLoading)
+    return (
+      <div className="max-w-3xl mx-auto w-full space-y-5 container py-3 mb-10 cursor-not-allowed">
+        <CreatePost.Skeleton />
+        <PostCard.Skeleton />
+        <PostCard.Skeleton />
+        <PostCard.Skeleton />
+      </div>
+    );
 
   return (
     <div className="max-w-3xl mx-auto w-full space-y-5 container py-3 mb-10">
