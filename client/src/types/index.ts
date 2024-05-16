@@ -25,6 +25,7 @@ export interface IPost {
   comments: {
     text: string;
     commentBy: IUser["_id"];
+    createdAt: string;
   }[];
   createdAt: string;
   updatedAt: string;

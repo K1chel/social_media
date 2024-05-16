@@ -44,7 +44,17 @@ export const PostReplyModal = ({ children, post }: Props) => {
         return;
       }
 
-      setPosts((prev) => [data, ...prev]);
+      setPosts((prevPosts) => {
+        const postIndex = prevPosts.findIndex((p) => p._id === post._id);
+        if (postIndex !== -1) {
+          return [
+            ...prevPosts.slice(0, postIndex),
+            data,
+            ...prevPosts.slice(postIndex + 1),
+          ];
+        }
+        return prevPosts;
+      });
       setReplyValue("");
       onCloseModal();
     } catch (error) {

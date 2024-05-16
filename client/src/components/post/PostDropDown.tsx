@@ -15,6 +15,7 @@ import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import { ConfirmationAction } from "../ConfirmationAction";
 import { useDeletePost } from "@/hooks/useDeletePost";
+import { toast } from "sonner";
 
 type Props = {
   post: IPost;
@@ -24,6 +25,14 @@ type Props = {
 
 export const PostDropDown = ({ post, currentUser, user }: Props) => {
   const { handleDeletePost, isLoading } = useDeletePost();
+
+  const onCopyPost = () => {
+    navigator.clipboard
+      .writeText(`${window.location.origin}/post/${post._id}`)
+      .then(() => {
+        toast.success("Link copied to clipboard");
+      });
+  };
 
   const isOwner = currentUser._id === user._id;
 
@@ -39,7 +48,11 @@ export const PostDropDown = ({ post, currentUser, user }: Props) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="p-0 lg:mr-20 mr-10 w-[160px]">
-        <DropdownMenuItem className="p-2 rounded-none" disabled={isLoading}>
+        <DropdownMenuItem
+          className="p-2 rounded-none"
+          disabled={isLoading}
+          onClick={onCopyPost}
+        >
           <CopyIcon className="size-4 mr-2" />
           <span className="text-sm font-medium">Copy link</span>
         </DropdownMenuItem>
