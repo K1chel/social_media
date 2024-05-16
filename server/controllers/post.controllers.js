@@ -5,6 +5,8 @@ import Notification from "../models/notification.model.js";
 import User from "../models/user.model.js";
 import Post from "../models/post.model.js";
 
+const MAX_REPLY_LENGTH = 150;
+
 export const create = async (req, res) => {
   try {
     let { imageSrc } = req.body;
@@ -43,19 +45,19 @@ export const getById = async (req, res) => {
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ message: "Invalid ID." });
+    return res.status(400).json({ error: "Post not found or invalid id." });
   }
 
   try {
     const post = await Post.findById(id);
 
     if (!post) {
-      return res.status(404).json({ message: "Post not found." });
+      return res.status(404).json({ error: "Post not found." });
     }
 
     res.json(post);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -241,6 +243,15 @@ export const replyToPost = async (req, res) => {
     if (!text) {
       return res.status(400).json({ error: "Text field is required" });
     }
+
+    if (text.length > MAX_REPLY_LENGTH) {
+      return res
+        .status(400)
+        .json({
+          error: `Text field must be less than ${MAX_REPLY_LENGTH} characters`,
+        });
+    }
+
     const post = await Post.findById(postId);
 
     if (!post) {

@@ -1,6 +1,7 @@
 import { HomePage } from "@/pages/HomePage";
 import { LoginPage } from "@/pages/LoginPage";
 import { NotificationsPage } from "@/pages/NotificationsPage";
+import { PostPage } from "@/pages/PostPage";
 import { ProfilePage } from "@/pages/ProfilePage";
 import { RegisterPage } from "@/pages/RegisterPage";
 import { UpdateProfilePage } from "@/pages/UpdateProfilePage";
@@ -21,6 +22,10 @@ export const privateRoutes = [
   {
     path: "/profile/:username/update",
     element: UpdateProfilePage,
+  },
+  {
+    path: "/post/:postId",
+    element: PostPage,
   },
 ];
 

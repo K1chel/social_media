@@ -39,7 +39,9 @@ export const PostCard = ({ post, isLast }: Props) => {
 
   const onNavigate = (href: string) => navigate(href);
 
-  if (!currentUser || !user) return null;
+  if (isLoading) return <PostCard.Skeleton />;
+
+  if (!currentUser || !user || isLoading) return null;
 
   return (
     <>

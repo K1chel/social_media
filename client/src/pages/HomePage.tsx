@@ -2,7 +2,7 @@ import { postAtom } from "@/atoms/postAtom";
 import { CreatePost } from "@/components/post/CreatePost";
 import { PostCard } from "@/components/post/PostCard";
 import { IPost } from "@/types";
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { toast } from "sonner";
 
