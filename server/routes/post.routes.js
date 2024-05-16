@@ -18,7 +18,7 @@ router.get("/post/:id", getById);
 router.post("/create", create);
 router.put("/edit/:id", edit);
 router.delete("/delete/:id", deleteById);
-router.post("/like-unlike/:id", likeUnlike);
+router.put("/like-unlike/:id", likeUnlike);
 router.post("/save-unsave/:id", saveUnsave);
 router.post("/reply/:id", replyToPost);
 
