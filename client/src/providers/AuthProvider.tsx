@@ -28,16 +28,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   );
 
   useEffect(() => {
-    if (!token) {
+    const storedToken = localStorage.getItem("token");
+
+    if (!token && !storedToken) {
       setIsLoading(false);
-      setToken("");
       setUser(null);
       return;
     }
 
     const fetchUser = async () => {
       try {
-        const res = await fetch("/api/auth/current-user");
+        const res = await fetch("/api/auth/current-user", {
+          headers: {
+            Authorization: `Bearer ${token || storedToken}`,
+          },
+        });
         const data = await res.json();
 
         if (data.error) {
@@ -46,6 +51,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
 
         setUser(data);
+        if (token) {
+          localStorage.setItem("token", token);
+        }
       } catch (error) {
         console.log(error);
       } finally {
