@@ -19,7 +19,7 @@ router.post("/create", create);
 router.put("/edit/:id", edit);
 router.delete("/delete/:id", deleteById);
 router.put("/like-unlike/:id", likeUnlike);
-router.post("/save-unsave/:id", saveUnsave);
+router.put("/save-unsave/:id", saveUnsave);
 router.post("/reply/:id", replyToPost);
 
 export default router;

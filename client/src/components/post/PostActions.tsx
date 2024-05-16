@@ -22,7 +22,11 @@ export const PostActions = ({ post }: Props) => {
   const [isLiked, setIsLiked] = useState<boolean>(
     post.likes.includes(currentUser?._id as string)
   );
+  const [isSaved, setIsSaved] = useState<boolean>(
+    post.saves.includes(currentUser?._id as string)
+  );
   const [isLikingLoading, setIsLikingLoading] = useState<boolean>(false);
+  const [isSavingLoading, setIsSavingLoading] = useState<boolean>(false);
 
   const handleLikeUnlike = async () => {
     if (!currentUser) return toast.error("You need to login to like a post");
@@ -67,6 +71,49 @@ export const PostActions = ({ post }: Props) => {
     }
   };
 
+  const handleSaveUnsave = async () => {
+    if (!currentUser) return toast.error("You need to login to save a post");
+    if (isSavingLoading) return;
+    setIsSavingLoading(true);
+    try {
+      const res = await fetch(`/api/posts/save-unsave/${post._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await res.json();
+      if (data.error) return toast.error(data.error);
+
+      if (!isSaved) {
+        const updatedPosts = posts.map((p) => {
+          if (p._id === post._id) {
+            return { ...p, saves: [...p.saves, currentUser._id] };
+          }
+          return p;
+        });
+        setPosts(updatedPosts);
+      } else {
+        const updatedPosts = posts.map((p) => {
+          if (p._id === post._id) {
+            return {
+              ...p,
+              saves: p.saves.filter((id) => id !== currentUser._id),
+            };
+          }
+          return p;
+        });
+        setPosts(updatedPosts);
+      }
+
+      setIsSaved(!isSaved);
+    } catch (error) {
+      toast.error("Something went wrong");
+    } finally {
+      setIsSavingLoading(false);
+    }
+  };
+
   return (
     <div
       className="flex items-center justify-between pt-3 cursor-default"
@@ -105,8 +152,16 @@ export const PostActions = ({ post }: Props) => {
         </div>
       </div>
       <div className="flex items-center gap-x-3">
-        <Button size="icon" variant="ghost" className="w-auto h-auto p-2">
-          <BookmarkIcon className="size-5" />
+        <Button
+          size="icon"
+          variant="ghost"
+          className="w-auto h-auto p-2"
+          onClick={handleSaveUnsave}
+          disabled={isSavingLoading}
+        >
+          <BookmarkIcon
+            className={cn("size-5", isSaved && "fill-amber-400 text-amber-400")}
+          />
         </Button>
       </div>
     </div>
