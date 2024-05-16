@@ -95,7 +95,10 @@ export const PostCard = ({ post, isLast }: Props) => {
               </p>
               {post.text.length > MAX_SHOW_POST_CHARACTERS && (
                 <button
-                  onClick={toggleTruncate}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleTruncate();
+                  }}
                   className="text-sm text-muted-foreground  hover:text-primary transition"
                 >
                   {isTruncated ? (
